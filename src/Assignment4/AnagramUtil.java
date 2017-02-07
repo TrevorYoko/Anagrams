@@ -7,6 +7,7 @@ public class AnagramUtil {
 	// This method returns the sorted version of the input string. The
 	// sorting must be accomplished using an insertion sort.  
 	public static String sort(String word){
+		
 		return word;
 		
 	}
@@ -19,7 +20,7 @@ public class AnagramUtil {
 
 	// This method returns true if the two input strings are anagrams of each other, otherwise returns false.
 	public static boolean areAnagrams(String word1, String word2){
-		return false;
+		return (word1.equals(word2));
 	}
 
 	// This method returns the largest group of anagrams in the input
