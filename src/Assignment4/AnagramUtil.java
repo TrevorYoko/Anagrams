@@ -74,48 +74,31 @@ public class AnagramUtil
 	// This method returns the largest group of anagrams in the input
 	// array of words, in no particular order. It returns an empty array if
 	// there are no anagrams in the input array.
+	@SuppressWarnings("unchecked")
 	public static String[] getLargestAnagramGroup(String[] words)
 	{
-		String largestAnagramGroup[] = new String[0]; //Largest group initially of length 0
+
+		String[] sortedArr = words.clone();
+		for(int i = 0; i < sortedArr.length; i++){
+			sortedArr[i] = sort(sortedArr[i]);
+		}
+		insertionSort(sortedArr,new AnagramComparator());
 		
-		int currentGroup = 1;  //Length of the current anagram group
-		
-		int startAnagramIndex = -1;   //Starting index of the current anagram group
-		                              //-1 until anagram group has started
-		
-		for(int index = 0; index < words.length - 1; index ++)
+		ArrayList<String> wordList = new ArrayList<String>();
+		String keyword = "";
+		for(int pos = 0; pos < sortedArr.length - 1; pos++)
 		{
-			if(areAnagrams(words[index], words[index + 1])) //If anagrams
-			{
-				//If the start index has not been initialized to a positive number
-				if(startAnagramIndex < 0)
-				{
-					startAnagramIndex = index;
-				}
-				currentGroup ++;
-			}
-			else
-			{ 	//If the group contains more than 1 element
-				//and it is larger than the previous largest
-				if(currentGroup > 1 && currentGroup > largestAnagramGroup.length)
-				{
-					largestAnagramGroup = new String[currentGroup];
-					
-					//Loop through and fill the array with correct values
-					for(int pos = 0; pos < largestAnagramGroup.length; pos ++)
-					{
-						largestAnagramGroup[pos] = words[startAnagramIndex + pos];
-					}
-				}
-				
-				//Reset Group variables
-				currentGroup = 1;
-				startAnagramIndex = -1;
+			if(sortedArr[pos].equals(sortedArr[pos + 1])){
+				keyword = sortedArr[pos];
 			}
 		}
-		
-		
-		return largestAnagramGroup;
+		for(int i = 0; i < words.length; i++){
+			if(areAnagrams(words[i], keyword))
+			{
+				wordList.add(words[i]);
+			}
+		}
+		return wordList.toArray(new String[wordList.size()]);
 	}
 
 	// Behaves the same as the previous method, but reads the list of
@@ -148,5 +131,27 @@ public class AnagramUtil
 			return new String[0];
 		}
 	}
+	//New Comparator Class
+	static class AnagramComparator  implements Comparator {
+		@Override
+		public int compare(Object word1, Object word2) {
+			//if it is the same return 0
+			if (word1.equals(word2)) {
+				return 0;
+			}
+			//if word2 equals null return -1
+			if (word1.equals(null)) {
+				return -1;
+			}
+			//if word1 equals null return 1
+			if (word2.equals(null)) {
+				return 1;
+			}
+			//return the compareTo of strings 
+			return ((String) word1).compareTo((String)word2);
+		}
+	}
 }
+
+
 
