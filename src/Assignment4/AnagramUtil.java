@@ -12,7 +12,7 @@ public class AnagramUtil
 	 * This method returns the sorted version of the input string. The
 	 * sorting must be accomplished using an insertion sort.  
 	 * 
-	 * @param str -- string to be sorted
+	 * @param word -- string to be sorted
 	 * @return String -- input string sorted alphabetically
 	 */
 	public static String sort(String word)
@@ -44,8 +44,14 @@ public class AnagramUtil
 		return result;
 	}
 
-	// This generic method sorts the input array using an insertion sort and
-	// the input Comparator object.
+	
+	/**
+	 * This Generic method sorts the input array through the process of insertion sort
+	 * It determines the value of each of the through the comparator
+	 * 
+	 * @param  array   -- The input array full of non-null strings
+	 * @param  compare -- The comparator that uses the "compareTo" function to determine the value of the strings
+	 */
 	public static <T> void insertionSort(T[] array, Comparator<? super T> compare)
 	{
 		for(int pos = 1; pos < array.length; pos ++)
@@ -65,46 +71,62 @@ public class AnagramUtil
 		}
 	}
 
-	// This method returns true if the two input strings are anagrams of each other, otherwise returns false.
+	/**
+	 * This method returns the sorted version of the input string. The
+	 * sorting must be accomplished using an insertion sort.  
+	 * 
+	 * @param word1          -- string that is compared againist word2
+	 * @param word2 	     -- string that is compared against word1 
+	 * @return boolean value -- true if the words are anagrams, false if they are not
+	 */
 	public static boolean areAnagrams(String word1, String word2)
 	{
 		return sort(word1).equalsIgnoreCase(sort(word2));
 	}
 
-	// This method returns the largest group of anagrams in the input
-	// array of words, in no particular order. It returns an empty array if
-	// there are no anagrams in the input array.
+	/**
+	 * This method finds and returns the largest group of one word anagrams from an array of strings
+	 * 
+	 * @param  words  -- array of valid words
+	 */
 	@SuppressWarnings("unchecked")
 	public static String[] getLargestAnagramGroup(String[] words)
 	{
-
+		//New clone of the inputted array
 		String[] sortedArr = words.clone();
+		//sorts each word in the array
 		for(int i = 0; i < sortedArr.length; i++){
 			sortedArr[i] = sort(sortedArr[i]);
 		}
+		//sorts the array through insertion sort
 		insertionSort(sortedArr,new AnagramComparator());
 		
 		ArrayList<String> wordList = new ArrayList<String>();
 		String keyword = "";
+		//Finds the word that appears the most in the sorted array
 		for(int pos = 0; pos < sortedArr.length - 1; pos++)
 		{
 			if(sortedArr[pos].equals(sortedArr[pos + 1])){
 				keyword = sortedArr[pos];
 			}
 		}
-		for(int i = 0; i < words.length; i++){
+		//adds the anagrams that appeared the most in the sorted array
+		for(int i = 0; i < words.length; i++)
+		{
 			if(areAnagrams(words[i], keyword))
 			{
 				wordList.add(words[i]);
 			}
 		}
+		//returns the arraylist but turned into a string[]
 		return wordList.toArray(new String[wordList.size()]);
 	}
 
-	// Behaves the same as the previous method, but reads the list of
-	// words from the input filename. It is assumed that the file contains
-	// one word per line. If the file does not exist or is empty, the method
-	// returns an empty array because there are no anagrams.
+	/**
+	 * This method finds and returns the largest group of one word anagrams from a given file 
+	 * 
+	 * @param  fileName  -- The name of a file from the resources folder
+	 */
 	public static String[] getLargestAnagramGroup(String fileName) 
 	{
 		try
@@ -126,25 +148,37 @@ public class AnagramUtil
 			return getLargestAnagramGroup(wordArr);
 			
 		}
-		catch(FileNotFoundException e) {
+		catch(FileNotFoundException e) 
+		{
 			System.out.println("File not found");
 			return new String[0];
 		}
 	}
 	//New Comparator Class
-	static class AnagramComparator  implements Comparator {
+	static class AnagramComparator  implements Comparator 
+	{
+		/**
+		 * This methods implements the compare class for our Anagram class
+		 * 
+		 * @param word1 -- An object that will be casted to a string and compared against word1
+		 * @param word2 -- An object that will be casted to a string and compared against word1
+		 */
 		@Override
-		public int compare(Object word1, Object word2) {
+		public int compare(Object word1, Object word2) 
+		{
 			//if it is the same return 0
-			if (word1.equals(word2)) {
+			if (word1.equals(word2))
+			{
 				return 0;
 			}
 			//if word2 equals null return -1
-			if (word1.equals(null)) {
+			if (word1.equals(null))
+			{
 				return -1;
 			}
 			//if word1 equals null return 1
-			if (word2.equals(null)) {
+			if (word2.equals(null))
+			{
 				return 1;
 			}
 			//return the compareTo of strings 
