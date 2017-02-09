@@ -92,6 +92,10 @@ public class AnagramUtil
 	@SuppressWarnings("unchecked")
 	public static String[] getLargestAnagramGroup(String[] words)
 	{
+		if(words.length == 0)
+		{
+			return new String[0];
+		}
 		//New clone of the inputted array
 		String[] sortedArr = words.clone();
 		//sorts each word in the array
@@ -102,23 +106,40 @@ public class AnagramUtil
 		insertionSort(sortedArr,new AnagramComparator());
 		
 		ArrayList<String> wordList = new ArrayList<String>();
-		String keyword = "";
-		//Finds the word that appears the most in the sorted array
-		for(int pos = 0; pos < sortedArr.length - 1; pos++)
+		
+		String groupString = sortedArr[0];
+		String largestGroupString = sortedArr[0];
+		
+		int groupSize = 1;
+		int largestGroupSize = 1;
+		
+		for(int index = 1; index < sortedArr.length; index ++)
 		{
-			if(sortedArr[pos].equals(sortedArr[pos + 1])){
-				keyword = sortedArr[pos];
-			}
-		}
-		//adds the anagrams that appeared the most in the sorted array
-		for(int i = 0; i < words.length; i++)
-		{
-			if(areAnagrams(words[i], keyword))
+			if(groupString.equals(sortedArr[index]))
 			{
-				wordList.add(words[i]);
+				groupSize ++;
+			}
+			else
+			{
+				if(groupSize > largestGroupSize)
+				{
+					largestGroupString = groupString;
+					largestGroupSize = groupSize;
+				}
+				
+				groupString = sortedArr[index];
+				groupSize = 1;
 			}
 		}
-		//returns the arraylist but turned into a string[]
+		
+		for(int index = 0; index < words.length; index ++)
+		{
+			if(sort(words[index]).equals(largestGroupString))
+			{
+				wordList.add(words[index]);
+			}
+		}
+
 		return wordList.toArray(new String[wordList.size()]);
 	}
 
