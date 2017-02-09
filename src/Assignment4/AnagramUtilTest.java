@@ -81,4 +81,29 @@ public class AnagramUtilTest
 		assertArrayEquals(inital4, completed4);
 	}
 	
+	@Test
+	public void testgetLargestAnagramGroupFile()
+	{
+		String fileName = "Resources/testWord1";
+		String[] expected1 = {"cat", "act", "tac", "tca"};
+		String[] completed1 = AnagramUtil.getLargestAnagramGroup(fileName);
+		System.out.println();
+		assertArrayEquals(expected1, completed1); 
+	
+		fileName = "Resources/testWord2";
+		String[] expected2 = {"hit","iht","tih"};
+		String[] completed2 = AnagramUtil.getLargestAnagramGroup(fileName);
+		assertArrayEquals(expected2, completed2);
+		
+		fileName = "Resources/testBlank";
+		String[] intial3 = {};
+		String[] completed3 = AnagramUtil.getLargestAnagramGroup(fileName);
+		assertArrayEquals(intial3, completed3);
+		
+		String[] expected4 = {"hurt", "urth", "turh", "ruth"};
+		fileName = "Resources/testWord4";
+		String[] completed4 = AnagramUtil.getLargestAnagramGroup(fileName);
+
+		assertArrayEquals(expected4, completed4);
+	}
 }
